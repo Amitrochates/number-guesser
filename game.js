@@ -51,8 +51,10 @@
  */
 function generateSecretNumber(min, max) {
   // TODO: implement this function.
+  console.log("piryanshu's first change")
   throw new Error('TODO: implement generateSecretNumber');
 }
+
 
 
 /**
