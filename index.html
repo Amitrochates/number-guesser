@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Guesser</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card">
+    <h1>Number Guesser</h1>
+    <p class="intro">I'm thinking of a number between 1 and 100. You have 10 attempts. Can you guess it?</p>
+
+    <div class="controls">
+      <input id="guess-input" type="number" min="1" max="100" placeholder="1 - 100" autocomplete="off">
+      <button id="guess-btn" type="button">Guess</button>
+    </div>
+
+    <p id="message"></p>
+
+    <p id="attempts-display">Attempts left: 10</p>
+
+    <button id="restart-btn" type="button" hidden>Play Again</button>
+
+    <section class="history">
+      <h2>Past games</h2>
+      <ul id="history-list"></ul>
+    </section>
+
+    <footer class="footer-note">Open tests.html to check your work</footer>
+  </main>
+
+  <!-- Scripts load in order: game logic first, then the UI wiring that uses it -->
+  <script src="game.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
