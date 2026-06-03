@@ -51,7 +51,7 @@
  */
 function generateSecretNumber(min, max) {
   // TODO: implement this function.
-  throw new Error('TODO: implement generateSecretNumber');
+ return Math.floor(Math.random()*(max-min+1))+min;
 }
 
 
