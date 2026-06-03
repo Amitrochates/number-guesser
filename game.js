@@ -78,7 +78,13 @@ function generateSecretNumber(min, max) {
  */
 function checkGuess(guess, secret) {
   // TODO: implement this function.
-  throw new Error('TODO: implement checkGuess');
+  if(guess<secret){
+    return 'low';
+  }else if(guess==secret){
+    return 'correct';
+  } else{
+    return 'high'
+  }
 }
 
 
