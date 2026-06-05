@@ -112,7 +112,13 @@ function checkGuess(guess, secret) {
  */
 function isGameOver(attemptsUsed, maxAttempts, hasWon) {
   // TODO: implement this function.
-  throw new Error('TODO: implement isGameOver');
+  if(attemptsUsed<maxAttempts && !hasWon){
+    return false;
+  } else if(attemptsUsed<=maxAttempts && hasWon){
+    return true;
+  } else{
+    return true;
+  } 
 }
 
 
@@ -140,7 +146,7 @@ function isGameOver(attemptsUsed, maxAttempts, hasWon) {
  */
 function addToHistory(historyArray, score) {
   // TODO: implement this function.
-  throw new Error('TODO: implement addToHistory');
+  return [...historyArray, score];
 }
 
 
@@ -166,7 +172,8 @@ function addToHistory(historyArray, score) {
  */
 function getLastFiveScores(historyArray) {
   // TODO: implement this function.
-  throw new Error('TODO: implement getLastFiveScores');
+  newArray= historyArray.slice(-5);
+  return newArray;
 }
 
 
