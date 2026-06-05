@@ -49,7 +49,7 @@
  * ends of your range, the usual trick involves the span "(max - min + 1)".
  * Work out on paper what numbers you want, then build the formula to match.
  */
-function generateSecretNumber(min, max) {
+function generateSecretNumber(min, max){
   // TODO: implement this function.
  return Math.floor(Math.random()*(max-min+1))+min;
 }

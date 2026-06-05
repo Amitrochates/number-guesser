@@ -64,86 +64,81 @@ const MAX_ATTEMPTS = 10;
  * survive across restarts. Initialise it once though — see the TODO below.
  */
 function initGame() {
-  // TODO: implement this function.
-  //
-  // Tip for scoreHistory: the very first time the page loads, scoreHistory is
-  // `undefined`. Set it to an empty array [] only if it doesn't exist yet, so
-  // that restarting a game doesn't wipe out your past scores. For example:
-  //   if (!scoreHistory) { scoreHistory = []; }
-  //
-  // Then reset the rest of the state and the page as described above.
+  if (!scoreHistory) {
+    scoreHistory = [];
+  }
+
+  secretNumber = Game.generateSecretNumber(1, 100);
+  attemptsUsed = 0;
+  hasWon = false;
+
+
+  document.getElementById("message").textContent = "";
+  document.getElementById('attempts-display').textContent = 'Attempts left: ' + MAX_ATTEMPTS;
+
+  const guessInput = document.getElementById('guess-input');
+  guessInput.value = '';
+  guessInput.disabled = false;
+
+  document.getElementById('guess-btn').disabled = false;
+  document.getElementById('restart-btn').hidden = true;
 }
 
 
-/**
- * Handle a single guess. This runs when the player clicks "Guess" (or presses
- * Enter in the input box).
- *
- * Step by step, it must:
- *   1. Read the value from #guess-input and turn it into a whole number.
- *      (use parseInt(value, 10))
- *   2. Validate it. If it is NOT a number, or is less than 1, or more than 100,
- *      show a helpful message (e.g. "Please enter a number from 1 to 100.") and
- *      `return` early so the rest of the function does not run.
- *      (Number.isNaN(...) is handy for the "not a number" check.)
- *   3. Ask the game logic about the guess:
- *        const result = Game.checkGuess(guess, secretNumber);
- *   4. Add 1 to attemptsUsed.
- *   5. Update #message and its colour class based on `result`:
- *        'high'    -> text "Too high!",  class "message-high"
- *        'low'     -> text "Too low!",   class "message-low"
- *        'correct' -> set hasWon = true  (the win message is handled in step 7)
- *      Remember to remove the OTHER message-* classes when you add one, so old
- *      colours don't linger. A small helper at the bottom of this file,
- *      setMessage(text, className), is provided to make this easy — use it!
- *   6. Update #attempts-display to show how many guesses are LEFT:
- *        "Attempts left: " + (MAX_ATTEMPTS - attemptsUsed)
- *   7. Ask whether the game is over:
- *        if (Game.isGameOver(attemptsUsed, MAX_ATTEMPTS, hasWon)) { ... }
- *      Inside that block:
- *        - if hasWon: show a win message that mentions how many attempts it
- *          took (e.g. "Correct! You got it in 4 attempts."), use class
- *          "message-win".
- *        - if NOT won (they ran out of guesses): show a lose message that
- *          reveals the secret number (e.g. "Out of guesses! The number was 57."),
- *          use class "message-lose".
- *        - work out the score: the number of attempts if they won, or 11 as a
- *          "did not finish" marker if they lost. For example:
- *            const score = hasWon ? attemptsUsed : 11;
- *        - record it:  scoreHistory = Game.addToHistory(scoreHistory, score);
- *          (note we REPLACE scoreHistory with the new array it returns)
- *        - call renderHistory() to redraw the list of past games
- *        - disable #guess-input and #guess-btn (.disabled = true)
- *        - show #restart-btn (.hidden = false)
- *   8. Clear the input box and (optionally) put the cursor back in it so the
- *      player can type their next guess quickly.
- */
 function handleGuess() {
-  // TODO: implement this function.
+  const value = document.getElementById('guess-input').value;
+  const guess = parseInt(value, 10);
+
+  if (Number.isNaN(guess) || guess < 1 || guess > 100) {
+    setMessage('Please enter a number from 1 to 100.');
+    return;
+  }
+
+  const result = Game.checkGuess(guess, secretNumber);
+  attemptsUsed += 1;
+
+  if (result === 'high') {
+    setMessage('Too high!', 'message-high');
+  } else if (result === 'low') {
+    setMessage('Too low!', 'message-low');
+  } else {
+    hasWon = true;
+  }
+
+  document.getElementById('attempts-display').textContent = 'Attempts left: ' + (MAX_ATTEMPTS - attemptsUsed);
+
+  if (Game.isGameOver(attemptsUsed, MAX_ATTEMPTS, hasWon)) {
+    if (hasWon) {
+      setMessage('Correct! You got it in ' + attemptsUsed + ' attempts.', 'message-win');
+    } else {
+      setMessage('Out of guesses! The number was ' + secretNumber + '.', 'message-lose');
+    }
+
+    const score = hasWon ? attemptsUsed : 11;
+    scoreHistory = Game.addToHistory(scoreHistory, score);
+    renderHistory();
+
+    document.getElementById('guess-input').disabled = true;
+    document.getElementById('guess-btn').disabled = true;
+    document.getElementById('restart-btn').hidden = false;
+  }
+
+  const guessInput = document.getElementById('guess-input');
+  guessInput.value = '';
+  guessInput.focus();
 }
 
 
-/**
- * Redraw the list of past game results in #history-list.
- *
- * It must:
- *   - get only the most recent scores:
- *       const recent = Game.getLastFiveScores(scoreHistory);
- *   - empty out the current #history-list (e.g. set its textContent to '',
- *     or remove its children) so old rows don't pile up
- *   - for each score in `recent`, create an <li> element, set its text, and
- *     append it to #history-list:
- *       const li = document.createElement('li');
- *       li.textContent = ...;
- *       historyList.appendChild(li);
- *   - the text for each row:
- *       score === 11  ->  "Did not finish"
- *       otherwise     ->  "Guessed in X attempts"   (X is the score)
- *
- * Use textContent (not innerHTML) so the page stays safe and simple.
- */
 function renderHistory() {
-  // TODO: implement this function.
+  const recent = Game.getLastFiveScores(scoreHistory);
+  const historyList = document.getElementById('history-list');
+  historyList.textContent = '';
+
+  for (const score of recent) {
+    const li = document.createElement('li');
+    li.textContent = score === 11 ? 'Did not finish' : 'Guessed in ' + score + ' attempts';
+    historyList.appendChild(li);
+  }
 }
 
 
