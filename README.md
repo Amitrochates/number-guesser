@@ -123,3 +123,11 @@ green.** To play the actual game, open `index.html`.
 - Do not use `innerHTML` to insert data; use `textContent`.
 - Commit after each milestone so you can see your progress (and roll back if
   needed).
+
+
+## POST completion 
+- make a new branch 
+- push that branch 'solution' to 'origin/solution'
+- make a pull request ftrom origin/solution to origin/main 
+- write in detail about your changes. 
+- get it merged. 
