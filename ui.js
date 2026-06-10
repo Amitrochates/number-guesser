@@ -210,17 +210,17 @@ function renderHistory() {
   for(let i=0; i<recent.length; i++){
    const li = document.createElement('li');
    if(recent[i].score ==11){
-     li.textContent="Game "+ (i+1)+" lost, secret number was "+ recent[i].secretNumber;
+     li.textContent="Game "+ (i+1)+" lost secret number: "+ recent[i].secretNumber;
      li.className= 'message-lose';
    } else{
-     li.textContent="Game "+ (i+1) +" Won, secret number was "+ recent[i].secretNumber +" in "+recent[i].score+" attempts";
+     li.textContent="Game "+ (i+1) +" won in "+recent[i].score+" attempts secret number: "+ recent[i].secretNumber ;
      li.className='message-win';
    }
    historyList.appendChild(li);
   }
 
 
-  
+
 
 }
 

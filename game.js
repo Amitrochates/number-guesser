@@ -51,8 +51,10 @@
  */
 function generateSecretNumber(min, max){
   // TODO: implement this function.
+  console.log("piryanshu's first change")
  return Math.floor(Math.random()*(max-min+1))+min;
 }
+
 
 
 /**
