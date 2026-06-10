@@ -128,6 +128,6 @@ green.** To play the actual game, open `index.html`.
 ## POST completion 
 - make a new branch 
 - push that branch 'solution' to 'origin/solution'
-- make a pull request ftrom origin/solution to origin/main 
+- make a pull request from origin/solution to origin/main 
 - write in detail about your changes. 
 - get it merged. 

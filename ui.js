@@ -72,8 +72,24 @@ function initGame() {
   //   if (!scoreHistory) { scoreHistory = []; }
   //
   // Then reset the rest of the state and the page as described above.
-}
 
+   if(!scoreHistory){
+    scoreHistory=[];
+   }
+   secretNumber=Game.generateSecretNumber(1, 100);
+   attemptsUsed=0;
+   hasWon=false;
+   document.getElementById('message').textContent='';
+   document.getElementById('message').className='';
+
+     
+  document.getElementById('attempts-display').textContent = 'Attempts left: 10';
+  document.getElementById('guess-input').value = '';
+  document.getElementById('restart-btn').hidden=true;
+  document.getElementById('guess-input').disabled= false;
+  document.getElementById('guess-btn').disabled=false;
+
+}
 
 /**
  * Handle a single guess. This runs when the player clicks "Guess" (or presses
@@ -120,8 +136,51 @@ function initGame() {
  */
 function handleGuess() {
   // TODO: implement this function.
-}
+let guessno= document.getElementById("guess-input"); // guessno is an element of html id "guess-input"
+  let guess=parseInt(guessno.value,10);
+ if(isNaN(guess) || guess>100 || guess<1){
+  return;
+ }
+ attemptsUsed++;
+ const result = Game.checkGuess(guess, secretNumber);
 
+ if(result=='correct'){
+  hasWon= true;
+  setMessage("You win!!", 'message-win')
+ } else if (result == 'high'){
+  setMessage("Too High!", 'message-high');
+ } else{
+   setMessage("Too Low!!",'message-low')
+ }
+
+ const attemptsLeft= MAX_ATTEMPTS - attemptsUsed;
+ document.getElementById("attempts-display").textContent="Attempts left: "+ attemptsLeft;
+
+ if (Game.isGameOver(attemptsUsed, MAX_ATTEMPTS, hasWon)) {
+     guessno.disabled =true;
+     document.getElementById("guess-btn").disabled= true;
+     document.getElementById("restart-btn").hidden= false;
+
+     const score = hasWon ? attemptsUsed : 11;
+
+     const gameResult={
+      score: score,
+      secretNumber: secretNumber
+     };
+
+     scoreHistory = Game.addToHistory(scoreHistory, gameResult);
+
+
+     if(hasWon){
+      setMessage("Correct! You got it in "+attemptsUsed+" attempts", 'message-win');
+     } else{
+      setMessage("Out of guesses! The number was "+secretNumber, 'message-lose');
+     }
+    renderHistory();
+    }
+    guessno.value='';
+    guessno.focus();
+}
 
 /**
  * Redraw the list of past game results in #history-list.
@@ -144,6 +203,25 @@ function handleGuess() {
  */
 function renderHistory() {
   // TODO: implement this function.
+  const recent = Game.getLastFiveScores(scoreHistory);
+  const historyList=document.getElementById("history-list")
+  historyList.textContent='';
+
+  for(let i=0; i<recent.length; i++){
+   const li = document.createElement('li');
+   if(recent[i].score ==11){
+     li.textContent="Game "+ (i+1)+" lost secret number: "+ recent[i].secretNumber;
+     li.className= 'message-lose';
+   } else{
+     li.textContent="Game "+ (i+1) +" won in "+recent[i].score+" attempts secret number: "+ recent[i].secretNumber ;
+     li.className='message-win';
+   }
+   historyList.appendChild(li);
+  }
+
+
+
+
 }
 
 

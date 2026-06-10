@@ -49,10 +49,9 @@
  * ends of your range, the usual trick involves the span "(max - min + 1)".
  * Work out on paper what numbers you want, then build the formula to match.
  */
-function generateSecretNumber(min, max) {
+function generateSecretNumber(min, max){
   // TODO: implement this function.
-  console.log("piryanshu's first change")
-  throw new Error('TODO: implement generateSecretNumber');
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
@@ -80,7 +79,13 @@ function generateSecretNumber(min, max) {
  */
 function checkGuess(guess, secret) {
   // TODO: implement this function.
-  throw new Error('TODO: implement checkGuess');
+  if(guess<secret){
+    return 'low';
+  }else if(guess==secret){
+    return 'correct';
+  } else{
+    return 'high'
+  }
 }
 
 
@@ -108,7 +113,13 @@ function checkGuess(guess, secret) {
  */
 function isGameOver(attemptsUsed, maxAttempts, hasWon) {
   // TODO: implement this function.
-  throw new Error('TODO: implement isGameOver');
+  if(attemptsUsed<maxAttempts && !hasWon){
+    return false;
+  } else if(attemptsUsed<=maxAttempts && hasWon){
+    return true;
+  } else{
+    return true;
+  } 
 }
 
 
@@ -136,7 +147,7 @@ function isGameOver(attemptsUsed, maxAttempts, hasWon) {
  */
 function addToHistory(historyArray, score) {
   // TODO: implement this function.
-  throw new Error('TODO: implement addToHistory');
+  return [...historyArray, score];
 }
 
 
@@ -162,7 +173,8 @@ function addToHistory(historyArray, score) {
  */
 function getLastFiveScores(historyArray) {
   // TODO: implement this function.
-  throw new Error('TODO: implement getLastFiveScores');
+  newArray= historyArray.slice(-5);
+  return newArray;
 }
 
 
